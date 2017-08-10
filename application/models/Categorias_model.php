@@ -12,7 +12,7 @@
 
         public function listar_categorias() {
             $this->db->order_by('titulo', 'ASC');
-            return $this->db->get('categorias')->result;
+            return $this->db->get('categorias')->result();
         }
         
         public function detalhes_categoria($id) {

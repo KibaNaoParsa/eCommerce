@@ -70,5 +70,46 @@
 				}
 			}
 		}
+		
+		public function form_login() {
+			$data_header['categorias'] = $this->categorias;
+			$this->load->view('html-header');
+			$this->load->view('header', $data_header);
+			$this->load->view('login');
+			$this->load->view('footer');
+			$this->load->view('html-footer');
+		}
+		
+		public function login() {
+			$this->load->library('form_validation');
+			$this->form_validation->set_rules('email', 'E-mail', 'required|valid_email');
+			$this->form_validation->set_rules('senha', 'Senha', 'required');
+			if($this->form_validation->run() == FALSE) {
+				$this->form_login();
+			} else {
+				$this->db->where('email', $this->input->post('email'));
+				$this->db->where('senha', $this->input->post('senha'));
+				$this->db->where('status', 1);
+				$cliente = $this->db->get('clientes')->result();
+				if(count($cliente)==1) {
+					$dadosSessao['cliente'] = $cliente[0];
+					$dadosSessao['logado'] = TRUE;
+					$this->session->set_userdata($dadosSessao);
+					redirect(base_url("produtos"));
+				} else {
+					$dadosSessao['cliente'] = NULL;
+					$dadosSessao['logado'] = FALSE;
+					$this->session->set_userdata($dadosSessao);
+					redirect(base_url("login"));
+				}
+			}
+		}
+		
+		public function logout() {
+			$dadosSessao['cliente'] = null;
+			$dadosSessao['logado'] = FALSE;
+			$this->session->set_userdata($dadosSessao);
+			redirect(base_url("login"));
+		}
 
     }

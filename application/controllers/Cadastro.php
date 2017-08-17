@@ -19,11 +19,22 @@
             $this->load->view('html-footer');
         }
         
+        public function esqueci_minha_senha() {
+			$data_header['categorias'] = $this->categorias;
+			$this->load->view('html-header');
+			$this->load->view('header', $data_header);
+			$this->load->view('form_recupera_login');
+			$this->load->view('footer');
+			$this->load->view('html-footer');
+		}
+        
+        
+        
         
         public function enviar_email_confirmacao($dados) {
 			$mensagem = $this->load->view('emails/confirmar_cadastro.php', $dados, TRUE);
 			$this->load->library('email');
-			$this->email->from("elyasnog@gmail.com", "Confirmação de cadastro");
+			$this->email->from("2info.cefetvarginha@gmail.com", "Confirmação de cadastro");
 			$this->email->to($dados['email']);
 			$this->email->subject('Lojão do Terceirão - confirmação de cadastro');
 			$this->email->message($mensagem);
@@ -111,5 +122,20 @@
 			$this->session->set_userdata($dadosSessao);
 			redirect(base_url("login"));
 		}
+		
+		 public function confirmar($hashEmail) {
+               $dados['status'] = 1;
+               $this->db->where('md5(email)', $hashEmail);
+               if($this->db->update('clientes', $dados)) {
+                    $data_header['categorias'] = $this->categorias;
+                    $this->load->view('html-header');
+                    $this->load->view('header', $data_header);
+                    $this->load->view('cadastro_liberado');
+                    $this->load->view('footer');
+                    $this->load->view('html-footer');
+               } else {
+                    echo "Houve um erro ao confirmar seu cadastro";
+               }
+        }
 
     }

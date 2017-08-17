@@ -2,7 +2,7 @@
     <div class="alinhado-centro borda-base espaco-vertical">
         <h3>Seja bem-vindo à nossa loja.</h3>
         <p>A melhor loja de comida, especiarias e temperos. Compre online e receba em sua casa</p>
-        <a class="btn btn-medium btn-sucess" href="#">Cadastre-se</a>
+        <?php echo anchor(base_url("cadastro") ,"Cadastre-se", array("class"=>"btn btn-mediun btn-success")); ?>
     </div>
     <div class="row-fluid">
         <?php

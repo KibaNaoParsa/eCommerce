@@ -1,14 +1,11 @@
 <div class="container">
     <div class="masthead">
 		<div id="cadastro-e-login">
-			   <?php if(null != $this->session->userdata('logado')){
-				echo "Seja Bom-Vindo" . $this->session->userdata('cliente')->nome . " " . $this->session->userdata('cliente')->sobrenome . anchor(base_url("logout"), " Logout");
-			}
-			else{
-				echo anchor(base_url("cadastro"), "Cadastro") . anchor(base_url("login"), " Login");
-			}
-			?>
-		</div>
+              <?php
+                   echo anchor(base_url("cadastro"), "Cadastro ").anchor(base_url("login"), " Login");
+              ?>
+         </div>
+
         <?php
             echo heading('Lojão do Terceirão', 3, 'class="muted"');
         ?>

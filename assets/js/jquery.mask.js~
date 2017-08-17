@@ -40,7 +40,6 @@
 // https://github.com/umdjs/umd/blob/master/jqueryPluginCommonjs.js
 
 
-
 (function (factory) {
 
     if (typeof define === 'function' && define.amd) {

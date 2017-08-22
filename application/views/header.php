@@ -1,9 +1,17 @@
 <div class="container">
     <div class="masthead">
 		<div id="cadastro-e-login">
-              <?php
-                   echo anchor(base_url("cadastro"), "Cadastro ").anchor(base_url("login"), " Login");
-              ?>
+              		<?php
+                   		if(null != $this->session->userdata('logado')) {
+					echo "Seja bem-vindo: " . $this->session->userdata('cliente')->nome . " " .
+						$this->session->userdata('cliente')->sobrenome .
+						anchor(base_url("logout"), "Logout");
+				} else {
+					echo anchor(base_url("cadastro"), "Cadastro ") .
+						anchor(base_url("login"), "Login");
+				}
+				echo anchor(base_url("carrinho")), " Carrinho [".$this->cart->total_items()."] ");
+			?>
          </div>
 
         <?php

@@ -131,10 +131,10 @@ CREATE TABLE `produtos` (
 --
 
 INSERT INTO `produtos` (`id`, `codigo`, `titulo`, `descricao`, `preco`, `largura_caixa_mm`, `altura_caixa_mm`, `comprimento_caixa_mm`, `peso_gramas`, `data_adicionado`, `ativo`) VALUES
-(1, '14252', 'chocolate amargo', 'amargoo', '42.00', 42, 63, 13, 62, '2017-08-10 10:18:17', 1),
-(2, '4272', 'Hamburgão do Greib', 'Hamburgão do Greib 50g', '23.00', 54, 25, 12, 53, '2017-08-10 10:20:51', 1),
-(3, '2613', 'pastel', 'pastel de queijo', '51.00', 51, 62, 12, 62, '2017-08-10 10:20:51', 1),
-(4, '352512', 'Chocolate ao Leite', 'chocolate não amargo', '26.00', 47, 22, 23, 72, '2017-08-16 14:13:05', 1);
+(1, '14252', 'Chocolate Amargo', '62g', '42.00', 42, 63, 13, 62, '2017-08-10 10:18:17', 1),
+(2, '4272', 'Hamburgão do Greib', '53g', '23.00', 54, 25, 12, 53, '2017-08-10 10:20:51', 1),
+(3, '2613', 'Pastel de Queijo', '62g', '51.00', 51, 62, 12, 62, '2017-08-10 10:20:51', 1),
+(4, '352512', 'Chocolate ao Leite', '72g', '26.00', 47, 22, 23, 72, '2017-08-16 14:13:05', 1);
 
 -- --------------------------------------------------------
 

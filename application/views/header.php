@@ -5,7 +5,8 @@
                    		if(null != $this->session->userdata('logado')) {
 					echo "Seja bem-vindo: " . $this->session->userdata('cliente')->nome . " " .
 						$this->session->userdata('cliente')->sobrenome .
-						anchor(base_url("logout"), "Logout");
+						anchor(base_url("home"), " Início ").
+						anchor(base_url("logout"), " Logout ");
 				} else {
 					echo anchor(base_url("cadastro"), "Cadastro ") .
 						anchor(base_url("login"), "Login");

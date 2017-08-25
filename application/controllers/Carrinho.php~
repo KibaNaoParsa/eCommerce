@@ -68,11 +68,11 @@ class Carrinho extends CI_Controller {
 	}
 	$peso = ceil($peso/1000);
 	$custo_frete = $this->db->query("SELECT * FROM tb_transporte_preco WHERE
-					ucase(uf) = ucase('".$estado_destino."') and
+					ucase(uf) = ucase('".$estado_destino"') and
 					peso_ate >= " . $peso . "order by peso_ate desc limit 1")->result();
 	if(count($custo_frete) < 1) {
 		$custo_frete = $this->db->query("SELECT * from tb_transporte_preco where
-						ucase(uf) = ucase('".$estado_destino."') order by
+						ucase(uf) = ucase('".$estado_destino"') order by
 						peso_ate desc limit 1")->result();
 		print_r($custo_frete);
 		if(count($custo_frete) < 1) {

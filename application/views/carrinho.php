@@ -42,3 +42,22 @@
     "</div>" .
     form_close();
       
+	if($frete) {
+		
+		echo "<div class='row-fluid'>".
+			"<div class=''span9></div>".
+			"<div class='span1 texto-direita'>Frete: </div>" .
+			"<div class='span2 texto-direita'>" . $reais($frete) . "</div>" .
+			"</div><div class='row-fluid'>" .
+			"<div class='span8'>" . anchor(base_url("pagar-e-finalizar") , "Pagar e finalizar compra") . "</div>" .
+			"<div class='span2 texto-direita'>Total da compra: </div>" .
+			"<div class='span2 texto-direita'>" . reais($this->cart->total() + $frete) . 
+			"</div>" . "</div>";
+	} else {
+
+		echo "<div class='row-fluid'>" . 
+			"<div class='span12 texto-direita'>" . "Efetue " . anchor(base_url('login'), 'Login') .
+			" para calcular o frete e finalizar a compra" . 
+			"</div>" . "</div>";
+	}
+

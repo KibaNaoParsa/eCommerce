@@ -57,4 +57,3 @@ $route['produto/(:num)/(:any)'] = 'produtos/produto/$1/$2';
 $route['login'] = 'cadastro/form_login';
 $route['esqueci-minha-senha'] = 'cadastro/esqueci-minha-senha';
 $route['logout'] = 'cadastro/logout';
-$route['pagar-e-finalizar-compra'] = 'carrinho/form_pagamento';

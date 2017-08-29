@@ -62,38 +62,97 @@ class Carrinho extends CI_Controller {
     }
  
     public function frete_transportadora($estado_destino) {
-	$peso = 0;
-	foreach($this->cart->contents() as $item) {
-		$peso += ($item['peso'] * $item['qty']);
-	}
-	$peso = ceil($peso/1000);
-	$custo_frete = $this->db->query("SELECT * FROM tb_transporte_preco WHERE
-					ucase(uf) = ucase('".$estado_destino"') and
-					peso_ate >= " . $peso . "order by peso_ate desc limit 1")->result();
-	if(count($custo_frete) < 1) {
-		$custo_frete = $this->db->query("SELECT * from tb_transporte_preco where
-						ucase(uf) = ucase('".$estado_destino"') order by
-						peso_ate desc limit 1")->result();
-		print_r($custo_frete);
+		$peso = 0;
+		foreach($this->cart->contents() as $item) {
+			$peso += ($item['peso'] * $item['qty']);
+		}
+		$peso = ceil($peso/1000);
+		$custo_frete = $this->db->query("SELECT * FROM tb_transporte_preco WHERE
+													ucase(uf) = ucase('".$estado_destino."') and
+													peso_ate >= " . $peso . " order by peso_ate desc limit 1")->result();
+	
 		if(count($custo_frete) < 1) {
-			$custo_frete = $this->db->query("select * from tb_transporte_preco order by
-							peso_ate desc limit 1")->result();
+			$custo_frete = $this->db->query("SELECT * from tb_transporte_preco where
+														ucase(uf) = ucase('".$estado_destino."') order by
+														peso_ate desc limit 1")->result();
+			print_r($custo_frete);
+			
+			if(count($custo_frete) < 1) {
+				$custo_frete = $this->db->query("select * from tb_transporte_preco order by
+															peso_ate desc limit 1")->result();
+			}
+		
 		}
 		
-	}
-	
-	$adicional = 0;
+		$adicional = 0;
 
-	if($peso > $custo_frete[0]->peso_ate) {
-		$adicional = ($peso - $custo_frete[0]->peso_ate) * $custo_frete[0]->adicional_kg;
-	}
+		if($peso > $custo_frete[0]->peso_ate) {
+			$adicional = ($peso - $custo_frete[0]->peso_ate) * $custo_frete[0]->adicional_kg;
+		}
 
-	$preco_frete = ($custo_frete[0]->preco + $adicional);
+		$preco_frete = ($custo_frete[0]->preco + $adicional);
 
-	return $preco_frete;
+		return $preco_frete;
 		
 	}
 
+
+	public function form_pagamento() {
+
+		$data_header['categorias'] = $this->categorias;
+		if(null != $this->session->userdata('logado')) {
+			$sessao = $this->session->userdata();
+			$estado = $sessao['cliente']->estado;
+			$data['frete'] = $this->frete_transportadora($estado);		
+		}	else {
+			$data['frete'] = null;		
+		}
+		
+		$this->load->view('html-header');
+		$this->load->view('header', $data_header);
+		$this->load->view('carrinho-formulario-pagamento', $data);
+		$this->load->view('footer');
+		$this->load->view('html-footer');
+		
+	
+	}
+
+
+
+	public function boleto() {
+	
+		require './assets/locaweb-gateway-php/LocawebGateway.php';
+		$array_pedido = array('numero'=>13, 'total'=>100.00, 'moeda'=>'real', 'descricao'=>'Pedido:13');
+		$array_pagamento = array('meio_pagamento'=>'boleto_itau', 'data_vencimento'=>date("dmY"));
+		$array_comprador = array('nome'=>'Paulo Guina', 'documento'=>'242.424.242-4', 'endereco'=>'Rua Suco de Laranja',
+										'numero'=>'24', 'cep'=>'37006-340', 'bairro'=>'Delícia', 'cidade'=>'Varginha',
+										'estado'=>'MG');
+		$array_transacao = array('url_retorno'=>base_url('carrinho/retorno-pagamento'), 'capturar'=>'true', 
+										'pedido'=>$array_pedido, 'pagamento'=>$array_pagamento, 'comprador'=>$array_comprador);
+		$transacao = LocawebGateway::criar($array_transacao)->sendRequest();
+		echo "<pre>";
+		print_r($transacao);	
+			
+	
+	}
+
+
+	public function pagar() {
+
+		require './assets/locaweb-gateway-php/LocawebGateway.php';
+		$array_pedido = array('numero'=>10, 'total'=>105.00, 'moeda'=>'real', 'descricao'=>'Pedido: 10');
+		$array_pagamento = array('meio_pagamento'=>'cielo', 'parcelas'=>1, 'tipo_operacao'=>'credito_a_vista',
+										'bandeira'=>'visa', 'nome_titular_cartao'=>'teste', 'cartao_numero'=>'4551870000000183',
+										'cartao_cvv'=>'973', 'cartao_validade'=>'082017');
+		$array_comprador = array('nome'=>'Paulo Guina', 'documento'=>'242.424.242-4', 'endereco'=>'Rua Suco de Laranja',
+										'numero'=>'24', 'cep'=>'37006-340', 'bairro'=>'Delícia', 'cidade'=>'Varginha',
+										'estado'=>'MG');
+		$array_transacao = array('url_retorno'=>base_url('carrinho/retorno-pagamento'), 'capturar'=>'true', 
+										'pedido'=>$array_pedido, 'pagamento'=>$array_pagamento, 'comprador'=>$array_comprador);
+		$transacao = LocawebGateway::criar($array_transacao)->sendRequest();
+		echo "<pre>";
+		print_r($transacao);	
+	}
  
 	
   

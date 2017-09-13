@@ -73,6 +73,27 @@
 
 				$this->db->insert('produtos', $data);
 				
+				$codigo = $this->db->query("SELECT id from produtos ORDER BY id desc limit 1")->result();
+				
+				$item = $this->input->get_post('categoria');
+				if(!empty($item)) {
+					$qtd = count($item);
+				}
+			
+				for ($i = 0; $i < $qtd; $i++) {
+					if(!empty($item[$i])) {
+						
+						foreach ($codigo as $c) {						
+							$dat['produto'] = $c->id;
+							$dat['categoria'] = $item[$i];
+						}
+										
+						$this->db->insert('produtos_categoria', $dat);
+					}
+				}
+				
+				redirect("Administracao");
+				
 			}
 
 

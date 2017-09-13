@@ -53,6 +53,7 @@ class Carrinho extends CI_Controller {
                 $this->cart->update($data);
             }
         }
+        redirect(base_url('carrinho'));
     }
 
     public function remover($rowid) {
@@ -110,59 +111,145 @@ class Carrinho extends CI_Controller {
                     $this->db->insert('pedidos', $dados);
                     $pedido = $this->db->insert_id();
                     foreach ($this->cart->contents() as $item) {
-								$dados_item['pedido'] = $pedido;
-								$dados_item['item'] = $item['id'];
-								$dados_item['quantidade'] = $item['qty'];
-								$dados_item['preco'] = $item['price'];
-								$this->db->insert('itens_pedidos', $dados_item);                    
+                                $dados_item['pedido'] = $pedido;
+                                $dados_item['item'] = $item['id'];
+                                $dados_item['quantidade'] = $item['qty'];
+                                $dados_item['preco'] = $item['price'];
+                                $this->db->insert('itens_pedidos', $dados_item);
                     }
                     $total_a_cobrar = (double)($this->cart->total()) + (double)(str_replace(",",".",$frete));
                     if($this->input->post('parcelamento') == 1) {
-								$operacao = 'credito_a_vista';                    
+                                $operacao = 'credito_a_vista';
                     } else {
-								$operacao = 'parcelado_loja';                    
+                                $operacao = 'parcelado_loja';
                     }
-                    
+
                     require_once('./locaweb-gateway-php/LocawebGateway.php');
                     $array_pedido = array('numero'=>$pedido , 'total'=>$total_a_cobrar , 'moeda'=>'real',
-                    								'descricao'=>'Pedido: '.$pedido);
+                                                    'descricao'=>'Pedido: '.$pedido);
                     $array_pagamento = array('meio_pagamento'=>'cielo' , 'parcelas'=>$this->input->post('parcelamento') ,
-                    									'tipo_operacao'=>$operacao, 'bandeira'=>$this->input->post('bandeira'),
-                    									'nome_titular_cartao'=>$this->input->post('cartao_nome'), 'cartao_numero'=>$this->input->post('cartao_numero'),
-                    									'cartao_cvv'=>$this->input->post('cartao_cvv'), 'cartao_validade'=>str_replace("/","", $this->input->post('cartao_validade')));
+                                                        'tipo_operacao'=>$operacao, 'bandeira'=>$this->input->post('bandeira'),
+                                                        'nome_titular_cartao'=>$this->input->post('cartao_nome'), 'cartao_numero'=>$this->input->post('cartao_numero'),
+                                                        'cartao_cvv'=>$this->input->post('cartao_cvv'), 'cartao_validade'=>str_replace("/","", $this->input->post('cartao_validade')));
                     $array_comprador = array('nome'=>$sessao['cliente']->nome, 'documento'=>$sessao['cliente']->cpf , 'endereco'=>$sessao['cliente']->rua, 'numero'=>$sessao['cliente']->numero,
-                    									 'cep'=>$sessao['cliente']->cep, 'bairro'=>$sessao['cliente']->bairro, 'cidade'=>$sessao['cliente']->cidade, 'estado'=>$sessao['cliente']->estado);
+                                                         'cep'=>$sessao['cliente']->cep, 'bairro'=>$sessao['cliente']->bairro, 'cidade'=>$sessao['cliente']->cidade, 'estado'=>$sessao['cliente']->estado);
                     $array_transacao = array('url_retorno'=>base_url('carrinho/finalizar_compra'), 'capturar'=>'true', 'pedido'=>$array_pedido, 'pagamento'=>$array_pagamento,
-                    									'comprador'=>$array_comprador);
+                                                        'comprador'=>$array_comprador);
                     $transacao = LocawebGateway::criar($array_transacao)->sendRequest();
-                    if(!$transacao>transacao->erro) {
-								$this->db->trans_commit();
-								$this->cart->destroy();
-								
-								$dados_email['pedido'] = $array_pedido;
-								$dados_email['comprador'] = $array_comprador;
-								$dados_email['transacao'] = $transacao;
-								$this->enviar_confirmacao($dados_email, $sessao['cliente']->email);
-								                    
+                    if(!$transacao->transacao->erro) {
+                                $this->db->trans_commit();
+                                $this->cart->destroy();
+
+                                $dados_email['pedido'] = $array_pedido;
+                                $dados_email['comprador'] = $array_comprador;
+                                $dados_email['transacao'] = $transacao;
+                                $this->enviar_confirmacao($dados_email, $sessao['cliente']->email);
+
                     } else {
-								$this->db->trans_rollback();                    
-                    
+                        $this->db->trans_rollback();
+
                     }
-                    
+
                     $dados_retorno['transacao'] = $transacao;
                     $dados_header['categorias'] = $this->categorias;
                     $this->load->view('html-header');
                     $this->load->view('header', $dados_header);
                     $this->load->view('retorno_cartao', $dados_retorno);
                     $this->load->view('footer');
-                    $this->load->view('html_footer'); 
-						  $this->db->trans_complete();
-						  
-            } //Continua
+                    $this->load->view('html_footer');
+                    $this->db->trans_complete();
+
+                } //Continua
+                else if( $this -> input -> post('tipo_pagamento') =='boleto') {
+                    // LÓGICA PARA PAGAMENTO COM BOLETO
+
+
+
+
+
+
+
+
+                    $this ->db -> trans_start() ;
+                    $dados['cliente'] = $sessao['cliente'] -> id ;
+                    $dados['produtos'] = $this -> cart -> total() ;
+                    $dados['frete'] = (double)str_replace(" ,","." , $frete );
+                    $dados['status'] = 0;
+                    $dados['comentarios'] = " Novo pedido inserido no sistema.";
+                    $this ->db -> insert('pedidos', $dados );
+                    $pedido = $this ->db -> insert_id();
+                    foreach( $this -> cart -> contents() as $item ) {
+                        $dados_item['pedido'] = $pedido;
+                        $dados_item['item'] = $item ['id'];
+                        $dados_item['quantidade'] = $item ['qty'];
+                        $dados_item['preco'] = $item ['price'];
+                        $this ->db -> insert('itens_pedidos', $dados_item);
+                    }
+                    $total_a_cobrar = (double)( $this -> cart -> total()) + (double)(str_replace(" ,","." , $frete )) ;
+                    require_once('./locaweb-gateway-php/LocawebGateway.php') ;
+                    $array_pedido = array ('numero'=>$pedido ,'total'=> $total_a_cobrar ,'moeda'=>'real','descricao'=>'Pedido:'. $pedido);
+                    $vencimento_boleto = date('dmY',strtotime('+1 week')) ;
+                    // estabelecendo uma semana de prazo para o vencimento do boleto
+                    $array_pagamento = array('meio_pagamento'=>'boleto_itau','data_vencimento'=> $vencimento_boleto );
+                    $array_comprador = array('nome'=> $sessao['cliente'] -> nome ,'documento'=> $sessao['cliente'] ->cpf ,
+                                        'endereco'=> $sessao['cliente'] ->rua ,'numero'=> $sessao['cliente'] -> numero ,
+                                        'cep'=> $sessao['cliente'] ->cep ,'bairro'=> $sessao['cliente'] -> bairro ,
+                                        'cidade'=> $sessao['cliente'] -> cidade ,
+                                        'estado'=> $sessao['cliente'] -> estado) ;
+                    $array_transacao = array ('url_retorno'=> base_url('carrinho/finalizar_compra') ,
+                                                                'capturar'=>'true','pedido'=> $array_pedido ,'pagamento'=> $array_pagamento ,
+                                                                'comprador'=> $array_comprador );
+                     $transacao = LocawebGateway::criar($array_transacao) -> sendRequest() ;
+                    if (!$transacao -> transacao -> erro ){
+                        $this ->db -> trans_commit() ;
+                        $this -> cart -> destroy() ;
+                        // ENVIO DO E - MAIL DE CONFIRMAÇÃO
+                        $dados_email['pedido'] = $array_pedido;
+                        $dados_email['comprador'] = $array_comprador ;
+                        $dados_email['transacao'] = $transacao;
+                        $this -> enviar_confirmacao($dados_email , $sessao['cliente'] -> email );
+                    } else{
+                        $this ->db -> trans_rollback() ;
+                    }
+                    $dados_retorno['transacao'] = $transacao;
+                    $dados_header['categorias'] = $this -> categorias;
+                    $this -> load -> view('html-header') ;
+                    $this -> load -> view('header', $dados_header) ;
+                    $this -> load -> view('retorno_boleto', $dados_retorno);
+                    $this -> load -> view('footer') ;
+                    $this -> load -> view('html-footer') ;
+                    $this ->db -> trans_complete() ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                }
+                else{
+                    redirect(base_url('pagar-e-finalizar-compra'));
+                }
+            }
+            else{
+                redirect(base_url('login') );
         }
     }
-
-
 
     public function form_pagamento() {
 
@@ -220,6 +307,31 @@ class Carrinho extends CI_Controller {
         echo "<pre>";
         print_r($transacao);
     }
+
+
+
+
+
+    public function enviar_confirmacao( $dados , $para ){
+        $this -> load -> library('email') ;
+        $this -> email -> from ("loja@terceirao.cefetmg.br"," Lojão do Terceirão");
+        $this -> email -> to($para);
+        $this -> email -> subject('Lojão do Terceirão - Pedido : '. $dados['pedido']['numero']) ;
+        $this -> email -> message( $this -> load -> view ('emails/novo_pedido',$dados , TRUE));
+        if( $this -> email -> send () ){
+            return " email enviado";
+        }
+        else{
+            return $this -> email -> print_debugger() ;
+        }
+    }
+
+
+
+
+
+
+
 
 
 

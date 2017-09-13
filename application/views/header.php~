@@ -19,8 +19,7 @@
             echo heading('Lojão do Terceirão', 3, 'class="muted"');
         ?>
         <ul class="nav nav-tabs">
-				<li class="active"><?php echo anchor(base_url(), "Home")?> </li>            
-            <li class="dropdown">
+            <li class="active">
                 <?php
                     echo anchor(base_url("produtos"), "Produtos<b class='caret'></b>",
                     array("class"=>"dropdown-toggle", "data-toggle"=>"dropdown"));

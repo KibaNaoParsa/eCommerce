@@ -5,7 +5,6 @@
                    		if(null != $this->session->userdata('logado')) {
 					echo "Seja bem-vindo: " . $this->session->userdata('cliente')->nome . " " .
 						$this->session->userdata('cliente')->sobrenome .
-						anchor(base_url("home"), " Início ").
 						anchor(base_url("logout"), " Logout ");
 				} else {
 					echo anchor(base_url("cadastro"), "Cadastro ") .
@@ -19,7 +18,7 @@
             echo heading('Lojão do Terceirão', 3, 'class="muted"');
         ?>
         <ul class="nav nav-tabs">
-				<li class="active"><?php echo anchor(base_url(), "Home")?> </li>            
+				<li class="active"><?php echo anchor(base_url("Administracao"), "Home")?> </li>            
             <li class="dropdown">
                 <?php
                     echo anchor(base_url("produtos"), "Produtos<b class='caret'></b>",

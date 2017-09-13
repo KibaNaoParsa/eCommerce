@@ -41,7 +41,7 @@
 
             $this->load->view('Administracao/html-header');
             $this->load->view('Administracao/header', $data_header);
-            $this->load->view('Administracao/cadastroProduto');
+            $this->load->view('Administracao/cadastroProduto', $data);
             $this->load->view('Administracao/footer');
             $this->load->view('Administracao/html-footer');
         }
@@ -58,6 +58,25 @@
 					echo "Não foi possível realizar a operação";
 				}			
 			}
+
+			public function cadastroProduto() {
+				
+				$data['codigo'] = $this->input->post('txt_codigo');
+				$data['titulo'] = $this->input->post('txt_titulo');				
+				$data['descricao'] = $this->input->post('txt_descricao');
+				$data['preco'] = $this->input->post('txt_preco');
+				$data['largura_caixa_mm'] = $this->input->post('txt_largura');			
+				$data['altura_caixa_mm'] = $this->input->post('txt_altura');
+				$data['comprimento_caixa_mm'] = $this->input->post('txt_comprimento');
+				$data['peso_gramas'] = $this->input->post('txt_peso');
+				$data['ativo'] = 1;
+
+				$vetor = $this->db->insert('produtos', $data);
+				
+				print_r($vetor);
+
+			}
+
 
     }
 

@@ -59,5 +59,22 @@
 				}			
 			}
 
+			public function cadastroProduto() {
+				
+				$data['codigo'] = $this->input->post('txt_codigo');
+				$data['titulo'] = $this->input->post('txt_titulo');				
+				$data['descricao'] = $this->input->post('txt_descricao');
+				$data['preco'] = $this->input->post('txt_preco');
+				$data['largura_caixa_mm'] = $this->input->post('txt_largura');			
+				$data['altura_caixa_mm'] = $this->input->post('txt_altura');
+				$data['comprimento_caixa_mm'] = $this->input->post('txt_comprimento');
+				$data['peso_gramas'] = $this->input->post('txt_peso');
+				$data['ativo'] = 1;
+
+				$this->db->insert('produtos', $data);
+				
+			}
+
+
     }
 

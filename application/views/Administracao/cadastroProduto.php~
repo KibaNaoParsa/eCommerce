@@ -16,10 +16,10 @@
   					form_input(array('id'=>'txt_peso', 'name'=>'txt_peso', 'Placeholder'=>'Peso...', 'value'=>set_value('txt_peso'))) .br().br();                
 
 					foreach ($CATEGORIA as $c) {
-						echo	form_label( $c->titulo, "txt_1i") .
-								form_checkbox("categoria[]", $c->id, FALSE) . br();					
+						echo	form_checkbox("categoria[]", $c->id, FALSE) . form_label( $c->titulo, "txt_1i") . br().br();
+													
 					}
-                form_submit("btn_cadastrar", "Confirmar", $btn).
+                echo form_submit("btn_cadastrar", "Confirmar", $btn).
                 form_close();
     ?>
 </div>

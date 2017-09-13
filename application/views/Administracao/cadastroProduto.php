@@ -19,7 +19,7 @@
 						echo	form_checkbox("categoria[]", $c->id, FALSE) . form_label( $c->titulo, "txt_1i") . br();
 													
 					}
-                form_submit("btn_cadastrar", "Confirmar", $btn).
+                echo br().form_submit("btn_cadastrar", "Confirmar", $btn).
                 form_close();
     ?>
 </div>

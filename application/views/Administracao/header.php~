@@ -3,8 +3,8 @@
 		<div id="cadastro-e-login">
               		<?php
                    		if(null != $this->session->userdata('logado')) {
-					echo "Seja bem-vindo: " . $this->session->userdata('administrador')->nome . " " .
-						$this->session->userdata('administrador')->sobrenome .
+					echo "Seja bem-vindo: " . $this->session->userdata('admin')->nome . " " .
+						$this->session->userdata('admin')->sobrenome .
 						anchor(base_url("logout"), " Logout ");
 				} else {
 					echo anchor(base_url("cadastro"), "Cadastro ") .

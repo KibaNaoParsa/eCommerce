@@ -143,7 +143,13 @@
                 $this->db->where('senha', $this->input->post('senha'));
                 $this->db->where('status', 1);
                 $cliente = $this->db->get('clientes')->result();
+                
+					 $this->db->where('email', $this->input->post('email'));
+                $this->db->where('senha', $this->input->post('senha'));
+                $this->db->where('status', 1);
+                                
                 $adm = $this->db->get('administracao')->result();
+                                
                 if(count($cliente)==1) {
                     $dadosSessao['cliente'] = $cliente[0];
                     $dadosSessao['logado'] = TRUE;

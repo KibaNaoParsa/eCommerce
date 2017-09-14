@@ -143,14 +143,21 @@
                 $this->db->where('senha', $this->input->post('senha'));
                 $this->db->where('status', 1);
                 $cliente = $this->db->get('clientes')->result();
+                
+					 $this->db->where('email', $this->input->post('email'));
+                $this->db->where('senha', $this->input->post('senha'));
+                $this->db->where('status', 1);
+                                
                 $adm = $this->db->get('administracao')->result();
+                
+						print_r(count($adm));                
                 if(count($cliente)==1) {
                     $dadosSessao['cliente'] = $cliente[0];
                     $dadosSessao['logado'] = TRUE;
                     $this->session->set_userdata($dadosSessao);
                     redirect(base_url("produtos"));
                 } else if (count($adm)==1){
-                    $dadosSessao['administrador'] = $adm[0];
+                    $dadosSessao['cliente'] = $adm[0];
                     $dadosSessao['logado'] = TRUE;
                     $this->session->set_userdata($dadosSessao);
                     redirect(base_url("administracao"));

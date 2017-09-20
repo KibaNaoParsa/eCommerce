@@ -6,9 +6,11 @@
         echo br();
 
         echo form_open('Administracao/cadastroCategoria', $atributos).
+        					'<div id="1" align="left" width="50%">'.
         					form_input(array('id'=>'txt_titulo', 'name'=>'txt_titulo', 'Placeholder'=>'Título...', 'value'=>set_value('txt_titulo'))) . br() .
-					form_input(array('id'=>'txt_descricao', 'name'=>'txt_descricao', 'Placeholder'=>'Descrição...', 'value'=>set_value('txt_descricao'))) .
-
+							'</div><div id="2" align="right" width="50%">'.
+							form_input(array('id'=>'txt_descricao', 'name'=>'txt_descricao', 'Placeholder'=>'Descrição...', 'value'=>set_value('txt_descricao'))) .'</div>'.br().br().
+					
 
 //               form_label("Título da categoria: ", "txt_titulo").
   //             form_input('txt_titulo').br().

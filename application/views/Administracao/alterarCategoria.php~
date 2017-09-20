@@ -5,10 +5,10 @@
 
         echo br();
 
-        echo form_open('Administracao/cadastroCategoria', $atributos).
-        					form_input(array('id'=>'txt_titulo', 'name'=>'txt_titulo', 'Placeholder'=>'Título...', 'value'=>set_value('txt_titulo'))) . br() .
-							form_textarea(array('id'=>'txt_descricao', 'name'=>'txt_descricao', 'Placeholder'=>'Descrição...', 'value'=>set_value('txt_descricao'))) .br().br().
-				
+        echo form_open('Administracao/alterarCategoria', $atributos).
+			form_hidden('id', $CATEGORIA[0]->id).
+			form_input('txt_titulo', $CATEGORIA[0]->titulo).br().
+			form_textarea('txt_descricao', $CATEGORIA[0]->descricao).br().
 
 //               form_label("Título da categoria: ", "txt_titulo").
   //             form_input('txt_titulo').br().

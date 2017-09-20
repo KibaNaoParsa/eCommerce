@@ -21,6 +21,37 @@
             $this->load->view('Administracao/html-footer');
         }
 
+		  // Início de chamada de view 
+
+		  public function v_categorias() {
+            $this->load->helper('text');
+            $data_header['categorias'] = $this->categorias;
+
+            $data['CATEGORIA'] = $this->db->get('categorias')->result();
+
+            $this->load->view('Administracao/html-header');
+            $this->load->view('Administracao/header', $data_header);
+            $this->load->view('Administracao/listagemCategorias', $data);
+            $this->load->view('Administracao/footer');
+            $this->load->view('Administracao/html-footer');
+						  
+		  }
+
+			public function v_alterarCat($id) {
+            $this->load->helper('text');
+            $data_header['categorias'] = $this->categorias;
+            
+				$this->db->where('categorias.id', $id);
+            $data['CATEGORIA'] = $this->db->get('categorias')->result();
+
+            $this->load->view('Administracao/html-header');
+            $this->load->view('Administracao/header', $data_header);
+            $this->load->view('Administracao/cadastroProduto', $data);
+            $this->load->view('Administracao/footer');
+            $this->load->view('Administracao/html-footer');
+			
+			}
+
 
         public function v_cadastroCategoria() {
             $this->load->helper('text');
@@ -46,7 +77,7 @@
             $this->load->view('Administracao/html-footer');
         }
         
-
+			// Fim de chamada de Waguin boiola
 
 			public function cadastroCategoria() {
 				$data['titulo'] = $this->input->post('txt_titulo');
@@ -91,6 +122,8 @@
 						$this->db->insert('produtos_categoria', $dat);
 					}
 				}
+				
+				redirect("Administracao");
 				
 			}
 

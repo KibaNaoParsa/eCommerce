@@ -79,12 +79,36 @@
         
 			// Fim de chamada de Waguin boiola
 
+			public function excluirCat($id) {
+				$this->db->where('categorias.id', $id);
+				
+				if($this->db->delete('categorias')) {
+					redirect('Administracao/v_categorias');				
+				} else {
+					echo "Há produtos cadastrados com esse código.";				
+				}
+			}
+
+			public function alterarCategoria($id) {
+
+				$data['titulo'] = $this->input->post('txt_titulo');
+				$data['descricao'] = $this->input->post('txt_descricao');
+				$this->db->where('categorias.id', $id);
+				
+				if($this->db->update('categorias', $data)) {
+					redirect('Administracao/v_categorias');		
+				} else {
+					echo "Vai dá não";				
+				}
+			
+			}
+
 			public function cadastroCategoria() {
 				$data['titulo'] = $this->input->post('txt_titulo');
 				$data['descricao'] = $this->input->post('txt_descricao');
 				
 				if($this->db->insert('categorias', $data)) {
-					redirect("Administracao");				
+					redirect("Administracao/v_categorias");				
 				} else {
 					echo "Não foi possível realizar a operação";
 				}			

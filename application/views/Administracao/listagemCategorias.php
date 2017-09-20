@@ -17,7 +17,7 @@
 							<td>".$c->descricao."</td>
 							<td>".anchor("Administracao/v_alterarCat/".$c->id, 
 											" Alterar ", 'class= "btn btn-warning btn-xs"')."</td>
-							<td>".anchor("Administracao/v_excluirCat/".$c->id, 
+							<td>".anchor("Administracao/excluirCat/".$c->id, 
 											" Excluir ", 'class= "btn btn-danger btn-xs"')."</td></tr>";
 														        
         }

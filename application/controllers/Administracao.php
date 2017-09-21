@@ -37,6 +37,19 @@
 						  
 		  }
 
+		  public function v_produtos() {
+            $this->load->helper('text');
+            $data_header['categorias'] = $this->categorias;
+
+            $data['PRODUTOS'] = $this->db->get('produtos')->result();
+
+            $this->load->view('Administracao/html-header');
+            $this->load->view('Administracao/header', $data_header);
+            $this->load->view('Administracao/listagemProdutos', $data);
+            $this->load->view('Administracao/footer');
+            $this->load->view('Administracao/html-footer');
+						  
+		  }
 			public function v_alterarCat($id) {
             $this->load->helper('text');
             $data_header['categorias'] = $this->categorias;
@@ -80,12 +93,21 @@
 			// Fim de chamada de Waguin boiola
 
 			public function excluirCat($id) {
-				$this->db->where('categorias.id', $id);
+				$this->db->select('produtos_categoria.categoria');
+				$this->db->from('produtos_categoria');
+				$this->db->where('produtos_categoria.categoria', $id);
+				$verificador = $this->db->get()->result();			
 				
-				if($this->db->delete('categorias')) {
+				if (count($verificador) == 0) {
+					$this->db->where('categorias.id', $id);
+
+					$this->db->delete('categorias');
 					redirect('Administracao/v_categorias');				
 				} else {
-					echo "Há produtos cadastrados com esse código.";				
+					echo '<script language="javascript">';
+					echo 'alert("Há produtos cadastrados com esse código.")';
+					echo '</script>';						
+					$this->v_categorias();
 				}
 			}
 

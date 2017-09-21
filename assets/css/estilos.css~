@@ -31,6 +31,5 @@ td, th {
 tr:nth-child(even) {
     background-color:#DCDCDC;
 }
-.difeente{
-	text-align: left;
-   padding: 8px;}
+.difeente{text-align: left;
+    padding: 8px;}

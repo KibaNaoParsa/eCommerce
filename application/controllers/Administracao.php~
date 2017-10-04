@@ -42,10 +42,12 @@
             $data_header['categorias'] = $this->categorias;
 
             $data['PRODUTOS'] = $this->db->get('produtos')->result();
+             $data['CATEGORIA'] = $this->db->get('categorias')->result();
+
 
             $this->load->view('Administracao/html-header');
             $this->load->view('Administracao/header', $data_header);
-            $this->load->view('Administracao/listagemCategorias', $data);
+            $this->load->view('Administracao/listagemProdutos', $data);
             $this->load->view('Administracao/footer');
             $this->load->view('Administracao/html-footer');
 						  
@@ -90,6 +92,21 @@
             $this->load->view('Administracao/html-footer');
         }
         
+			public function v_alterarPro($id) {
+            $this->load->helper('text');
+            $data_header['categorias'] = $this->categorias;
+            
+				$this->db->where('produtos.id', $id);
+            $data['PRODUTO'] = $this->db->get('produtos')->result();
+
+            $this->load->view('Administracao/html-header');
+            $this->load->view('Administracao/header', $data_header);
+            $this->load->view('Administracao/alterarProduto', $data);
+            $this->load->view('Administracao/footer');
+            $this->load->view('Administracao/html-footer');
+									
+			}        
+        
 			// Fim de chamada de Waguin boiola
 
 			public function excluirCat($id) {
@@ -105,9 +122,11 @@
 					redirect('Administracao/v_categorias');				
 				} else {
 					echo '<script language="javascript">';
-					echo 'alert("Há produtos cadastrados com esse código.")';
+					echo 'alert("Há produtos cadastrados com esse código.");';
+					echo 'location.href="Administracao/v_categorias";';					
+
 					echo '</script>';						
-					$this->v_categorias();
+	//				$this->v_categorias();
 				}
 			}
 
@@ -170,6 +189,79 @@
 				}
 				
 				redirect("Administracao");
+				
+			}
+			
+			public function excluirProCat($id) {
+				$this->db->select("produtos_categoria.produto");
+				$this->db->from("produtos_categoria");
+				$this->db->where("produtos_categoria.produto", $id);
+				$data['PROCAT'] = $this->db->get()->result();
+
+				if(count($data['PROCAT']) != 0) {					
+					$this->db->select("produtos_categoria.produto");
+					$this->db->from("produtos_categoria");
+					$this->db->where("produtos_categoria.produto", $id);
+					$this->db->delete('produtos_categoria');
+				}
+
+
+			}			
+			
+			
+			public function alterarProduto($id) {
+
+				$data['id'] = $this->input->post('id');				
+				$data['codigo'] = $this->input->post('txt_codigo');
+				$data['titulo'] = $this->input->post('txt_titulo');				
+				$data['descricao'] = $this->input->post('txt_descricao');
+				$data['preco'] = $this->input->post('txt_preco');
+				$data['largura_caixa_mm'] = $this->input->post('txt_largura');			
+				$data['altura_caixa_mm'] = $this->input->post('txt_altura');
+				$data['comprimento_caixa_mm'] = $this->input->post('txt_comprimento');
+				$data['peso_gramas'] = $this->input->post('txt_peso');
+				$data['ativo'] = 1;
+
+				$this->db->where('produtos.id', $id);
+				
+				$this->db->update('produtos', $data);
+				
+				$item = $this->input->get_post('categoria');
+				if(!empty($item)) {
+					$qtd = count($item);
+				}
+			
+				for ($i = 0; $i < $qtd; $i++) {
+					if(!empty($item[$i])) {
+						
+						foreach ($codigo as $c) {						
+							$dat['produto'] = $id;
+							$dat['categoria'] = $item[$i];
+						}
+										
+						$this->db->insert('produtos_categoria', $dat);
+					}
+				}
+				
+				redirect("Administracao/v_produtos");
+
+			}
+
+			public function excluirProduto($id) {
+				$this->db->select("id");
+				$this->db->from("produtos");
+				$this->db->where("produtos.id", $id);
+				$this->db->delete('produtos');
+			}
+			
+			public function excluirPro($id) {
+				
+				$this->excluirProCat($id);				
+				
+				$this->excluirProduto($id);
+				
+				redirect('Administracao/v_produtos');
+				
 				
 			}
 

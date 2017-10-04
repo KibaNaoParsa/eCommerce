@@ -21,7 +21,7 @@
 														        
         }
         
-        echo "<td></td><td></td>	<td>".anchor("Administracao/v_cadastroCategoria", 
+        echo "<td></td><td></td><td></td>	<td>".anchor("Administracao/v_cadastroCategoria", 
 											" Novo item ", 'class= "btn btn-primary"')."</td>";
         echo "</table>";
 			

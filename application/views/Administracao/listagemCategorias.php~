@@ -2,7 +2,7 @@
     <?php
 			//echo heading("Categorias", 3);       
        
-        echo "<table class='w3-table-all w3-tiny' style='width: 100%'>
+        echo "<table class='	w3-table-all w3-tiny' style='width: 100%'>
         <tr>
         	<th>Título</th>
         	<th>Descrição</th>
@@ -20,9 +20,9 @@
 											" Excluir ", 'class= "btn btn-danger btn-xs"')."</td></tr>";
 														        
         }
-        
-        echo "<td></td><td></td>	<td>".anchor("Administracao/v_cadastroCategoria", 
-											" Novo item ", 'class= "btn btn-primary"')."</td>";
+        echo "</table><table><tr>";
+        echo "<td></td><td></td><td></td>	<td>".anchor("Administracao/v_cadastroCategoria", 
+											" Novo item ", 'class= "btn btn-primary"')."</td></tr>";
         echo "</table>";
 			
     ?>

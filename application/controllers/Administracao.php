@@ -98,13 +98,31 @@
 				$this->db->where('produtos.id', $id);
             $data['PRODUTO'] = $this->db->get('produtos')->result();
 				$data['CATEGORIA'] = $this->db->get('categorias')->result();
+				
+				
+				$this->db->select("produtos_categoria.categoria");
+				$this->db->from("produtos_categoria");
+				$this->db->where("produtos_categoria.produto", $id);
+				$data['PROCAT'] = $this->db->get()->result();				
+				
+				foreach($data['CATEGORIA'] as $c) {
+					$achei = 0;
+					foreach ($data['PROCAT'] as $pc) {
+						if ($c->id == $pc->categoria) {
+							$achei = 1;						
+						}					
+					}
+					$data['BOOL'][] = $achei;
+				}
+				
+				
 
             $this->load->view('Administracao/html-header');
             $this->load->view('Administracao/header', $data_header);
             $this->load->view('Administracao/alterarProduto', $data);
             $this->load->view('Administracao/footer');
             $this->load->view('Administracao/html-footer');
-									
+								
 			}        
         
 			// Fim de chamada de Waguin boiola
@@ -172,6 +190,7 @@
 				$codigo = $this->db->query("SELECT id from produtos ORDER BY id desc limit 1")->result();
 				
 				$item = $this->input->get_post('categoria');
+			
 				if(!empty($item)) {
 					$qtd = count($item);
 				}
@@ -211,6 +230,8 @@
 			
 			public function alterarProduto($id) {
 
+				$this->excluirProCat($id);
+
 				$data['id'] = $this->input->post('id');				
 				$data['codigo'] = $this->input->post('txt_codigo');
 				$data['titulo'] = $this->input->post('txt_titulo');				
@@ -232,12 +253,12 @@
 				}
 			
 				for ($i = 0; $i < $qtd; $i++) {
+					
 					if(!empty($item[$i])) {
-						
-						foreach ($codigo as $c) {						
-							$dat['produto'] = $id;
+					
+							$dat['produto'] = $data['id'];
 							$dat['categoria'] = $item[$i];
-						}
+
 										
 						$this->db->insert('produtos_categoria', $dat);
 					}
@@ -252,6 +273,8 @@
 				$this->db->from("produtos");
 				$this->db->where("produtos.id", $id);
 				$this->db->delete('produtos');
+				
+
 			}
 			
 			public function excluirPro($id) {
@@ -260,7 +283,10 @@
 				
 				$this->excluirProduto($id);
 				
-				redirect('Administracao/v_produtos');
+				echo "<script>
+							alert('Exclusão feita com sucesso!');	
+							location.href='Administracao/v_produtos';	
+						</script>";
 				
 				
 			}

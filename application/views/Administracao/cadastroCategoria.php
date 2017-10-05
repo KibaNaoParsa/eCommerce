@@ -1,7 +1,7 @@
 <div id="homebody">
     <?php
         $atributos = array('name'=>'formulario_cadastro', 'id'=>'formulario_cadastro');
-		$btn = array('name'=>'btn_cadastrar', 'id'=>'botao1', 'class'=>'btn btn-warning');
+		$btn = array('name'=>'btn_cadastrar', 'id'=>'botao1', 'class'=>'btn btn-secondary');
 
         echo br();
 

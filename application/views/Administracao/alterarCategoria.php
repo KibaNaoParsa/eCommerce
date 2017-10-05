@@ -1,7 +1,7 @@
 <div id="homebody">
     <?php
         $atributos = array('name'=>'formulario_cadastro', 'id'=>'formulario_cadastro');
-		$btn = array('name'=>'btn_cadastrar', 'id'=>'botao1', 'class'=>'btn btn-warning');
+		$btn = array('name'=>'btn_cadastrar', 'id'=>'botao1', 'class'=>'btn btn-secondary');
 
         echo br();
 		 echo "<table  id='diferente' style='width: 100%'>
@@ -22,8 +22,7 @@
   //             form_input('txt_titulo').br().
     //           form_label("Descrição da categoria: ", "txt_descricao").
       //         form_input('txt_descricao').br().br().
-                "<tr><td>".form_submit("btn_cadastrar", "Confirmar", $btn)."</td><td></td></tr>".
+                "<tr></table>".form_submit("btn_cadastrar", "Confirmar", $btn).
                 form_close();
-	echo "</table>";    
     ?>
 </div>

@@ -1,14 +1,14 @@
 <div id="homebody">
     <?php
         $atributos = array('name'=>'formulario_cadastro', 'id'=>'formulario_cadastro');
-		$btn = array('name'=>'btn_cadastrar', 'id'=>'botao1', 'class'=>'btn btn-warning');
+		$btn = array('name'=>'btn_cadastrar', 'id'=>'botao1', 'class'=>'btn btn-secondary');
 
         echo br();
 
         echo form_open('Administracao/cadastroProduto', $atributos).
 					form_input(array('id'=>'txt_codigo', 'name'=>'txt_codigo', 'Placeholder'=>'Código...', 'value'=>set_value('txt_codigo'))) .br().
   					form_input(array('id'=>'txt_titulo', 'name'=>'txt_titulo', 'Placeholder'=>'Título...', 'value'=>set_value('txt_titulo'))) .br().                
-  					form_input(array('id'=>'txt_descricao', 'name'=>'txt_descricao', 'Placeholder'=>'Descrição...', 'value'=>set_value('txt_descricao'))) .br().                
+  					form_textarea(array('id'=>'txt_descricao', 'name'=>'txt_descricao', 'Placeholder'=>'Descrição...', 'value'=>set_value('txt_descricao'))) .br().                
   					form_input(array('id'=>'txt_preco', 'name'=>'txt_preco', 'Placeholder'=>'Preço (sem R$)...', 'value'=>set_value('txt_preco'))) .br().                
   					form_input(array('id'=>'txt_largura', 'name'=>'txt_largura', 'Placeholder'=>'Largura...', 'value'=>set_value('txt_largura'))) .br().                
   					form_input(array('id'=>'txt_altura', 'name'=>'txt_altura', 'Placeholder'=>'Altura...', 'value'=>set_value('txt_altura'))) .br().                

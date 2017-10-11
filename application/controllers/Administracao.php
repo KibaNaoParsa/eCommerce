@@ -80,8 +80,7 @@
         
         public function v_cadastroProduto() {
             $this->load->helper('text');
-            $data_header['categorias'] = $this->categorias;
-            
+            $data_header['categorias'] = $this->categorias;            
             $data['CATEGORIA'] = $this->db->get('categorias')->result();
 
             $this->load->view('Administracao/html-header');
@@ -125,8 +124,78 @@
 								
 			}        
         
+			public function v_tabelaFrete() {
+				$this->load->helper('text');
+            $data_header['categorias'] = $this->categorias;
+
+            $data['transporte'] = $this->db->get('tb_transporte_preco')->result();
+
+            $this->load->view('Administracao/html-header');
+            $this->load->view('Administracao/header', $data_header);
+            $this->load->view('Administracao/listagemFrete', $data);
+            $this->load->view('Administracao/footer');
+            $this->load->view('Administracao/html-footer');
+			
+			}        
+			
+			public function v_cadastroFrete() {
+			   $this->load->helper('text');
+            $data_header['categorias'] = $this->categorias;
+
+            $this->load->view('Administracao/html-header');
+            $this->load->view('Administracao/header', $data_header);
+            $this->load->view('Administracao/cadastroFrete');
+            $this->load->view('Administracao/footer');
+            $this->load->view('Administracao/html-footer');
+			}
+			
+			public function v_alterarFrete($id) {
+            $this->load->helper('text');
+            $data_header['categorias'] = $this->categorias;
+            
+				$this->db->where('tb_transporte_preco.id', $id);
+            $data['TRANSPORTE'] = $this->db->get('tb_transporte_preco')->result();
+
+            $this->load->view('Administracao/html-header');
+            $this->load->view('Administracao/header', $data_header);
+            $this->load->view('Administracao/alterarFrete', $data);
+            $this->load->view('Administracao/footer');
+            $this->load->view('Administracao/html-footer');
+							
+			}
+        
+        
 			// Fim de chamada de Waguin boiola
 
+			// Área da categoria
+
+
+			public function cadastroCategoria() {
+				$data['titulo'] = $this->input->post('txt_titulo');
+				$data['descricao'] = $this->input->post('txt_descricao');
+				
+				if($this->db->insert('categorias', $data)) {
+					redirect("Administracao/v_categorias");				
+				} else {
+					echo "Não foi possível realizar a operação";
+				}			
+			}
+
+			public function alterarCategoria($id) {
+
+				$data['titulo'] = $this->input->post('txt_titulo');
+				$data['descricao'] = $this->input->post('txt_descricao');
+				$this->db->where('categorias.id', $id);
+				
+				if($this->db->update('categorias', $data)) {
+					redirect('Administracao/v_categorias');		
+				} else {
+					echo "Vai dá não";				
+				}
+			
+			}
+
+			
 			public function excluirCat($id) {
 				$this->db->select('produtos_categoria.categoria');
 				$this->db->from('produtos_categoria');
@@ -144,34 +213,10 @@
 					echo 'location.href="Administracao/v_categorias";';					
 
 					echo '</script>';						
-	//				$this->v_categorias();
 				}
 			}
 
-			public function alterarCategoria($id) {
-
-				$data['titulo'] = $this->input->post('txt_titulo');
-				$data['descricao'] = $this->input->post('txt_descricao');
-				$this->db->where('categorias.id', $id);
-				
-				if($this->db->update('categorias', $data)) {
-					redirect('Administracao/v_categorias');		
-				} else {
-					echo "Vai dá não";				
-				}
-			
-			}
-
-			public function cadastroCategoria() {
-				$data['titulo'] = $this->input->post('txt_titulo');
-				$data['descricao'] = $this->input->post('txt_descricao');
-				
-				if($this->db->insert('categorias', $data)) {
-					redirect("Administracao/v_categorias");				
-				} else {
-					echo "Não foi possível realizar a operação";
-				}			
-			}
+			// Área do produto
 
 			public function cadastroProduto() {
 				
@@ -210,24 +255,7 @@
 				redirect("Administracao");
 				
 			}
-			
-			public function excluirProCat($id) {
-				$this->db->select("produtos_categoria.produto");
-				$this->db->from("produtos_categoria");
-				$this->db->where("produtos_categoria.produto", $id);
-				$data['PROCAT'] = $this->db->get()->result();
 
-				if(count($data['PROCAT']) != 0) {					
-					$this->db->select("produtos_categoria.produto");
-					$this->db->from("produtos_categoria");
-					$this->db->where("produtos_categoria.produto", $id);
-					$this->db->delete('produtos_categoria');
-				}
-
-
-			}			
-			
-			
 			public function alterarProduto($id) {
 
 				$this->excluirProCat($id);
@@ -241,7 +269,7 @@
 				$data['altura_caixa_mm'] = $this->input->post('txt_altura');
 				$data['comprimento_caixa_mm'] = $this->input->post('txt_comprimento');
 				$data['peso_gramas'] = $this->input->post('txt_peso');
-				$data['ativo'] = 1;
+				$data['ativo'] = $this->input->post('txt_atividade');
 
 				$this->db->where('produtos.id', $id);
 				
@@ -268,6 +296,23 @@
 
 			}
 
+			
+			public function excluirProCat($id) {
+				$this->db->select("produtos_categoria.produto");
+				$this->db->from("produtos_categoria");
+				$this->db->where("produtos_categoria.produto", $id);
+				$data['PROCAT'] = $this->db->get()->result();
+
+				if(count($data['PROCAT']) != 0) {					
+					$this->db->select("produtos_categoria.produto");
+					$this->db->from("produtos_categoria");
+					$this->db->where("produtos_categoria.produto", $id);
+					$this->db->delete('produtos_categoria');
+				}
+
+
+			}			
+						
 			public function excluirProduto($id) {
 				$this->db->select("id");
 				$this->db->from("produtos");
@@ -283,11 +328,50 @@
 				
 				$this->excluirProduto($id);
 				
-				echo "<script>
-							alert('Exclusão feita com sucesso!');	
-							location.href='Administracao/v_produtos';	
-						</script>";
+			}
+			
+			// Área do Frete
+			
+			
+			public function cadastroFrete() {
+				$data['uf'] = $this->input->post('txt_uf');
+				$data['peso_de'] = $this->input->post('txt_pesomin');
+				$data['peso_ate'] = $this->input->post('txt_pesomax');
+				$data['preco'] = $this->input->post('txt_preco');
+				$data['adicional_kg'] = $this->input->post('txt_adicional');			
 				
+				if ($this->db->insert('tb_transporte_preco', $data)) {
+					redirect('Administracao/v_tabelaFrete');				
+				} else {
+					echo "Não foi possível realizar a operação.";
+									
+				}
+			}
+			
+			public function alterarFrete($id) {
+				$data['id'] = $this->input->post('id');
+				$data['uf'] = $this->input->post('txt_uf');
+				$data['peso_de'] = $this->input->post('txt_pesomin');
+				$data['peso_ate'] = $this->input->post('txt_pesomax');
+				$data['preco'] = $this->input->post('txt_preco');
+				$data['adicional_kg'] = $this->input->post('txt_adicional');
+				$this->db->where('tb_transporte_preco.id', $id);
+				
+				if($this->db->update('tb_transporte_preco', $data)) {
+					redirect('Administracao/v_tabelaFrete');				
+				} else {
+					echo "Naum";				
+				}
+				
+			}
+			
+			public function excluirFrete($id) {
+				$this->db->where('tb_transporte_preco.id', $id);
+				if ($this->db->delete('tb_transporte_preco')) {
+					redirect('Administracao/v_tabelaFrete');				
+				} else {
+					echo "Não";
+				}
 				
 			}
 

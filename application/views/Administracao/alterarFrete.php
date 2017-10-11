@@ -1,0 +1,23 @@
+<div id="homebody">
+    <?php
+        $atributos = array('name'=>'formulario_cadastro', 'id'=>'formulario_cadastro');
+		$btn = array('name'=>'btn_cadastrar', 'id'=>'botao1', 'class'=>'btn btn-secondary');
+
+        echo br();
+			        
+        echo form_open('Administracao/alterarFrete/'.$TRANSPORTE[0]->id, $atributos).
+        			form_hidden('id', $TRANSPORTE[0]->id).
+					form_label('UF de destino: ', 'txt_uf').					
+					form_input('txt_uf', $TRANSPORTE[0]->uf) .br().
+					form_label('Peso mínimo (kg): ', 'txt_pesomin').
+  					form_input('txt_pesomin', $TRANSPORTE[0]->peso_de) .br().                
+  					form_label('Peso máximo (kg): ', 'txt_pesomax').
+  					form_input('txt_pesomax', $TRANSPORTE[0]->peso_ate) .br().				
+					form_label('Preço (R$): ', 'txt_preco').
+					form_input('txt_preco', $TRANSPORTE[0]->preco) .br().                
+  					form_label('Adicional (R$): ', 'txt_adicional').
+  					form_input('txt_adicional', $TRANSPORTE[0]->adicional_kg) .br().                
+              	br(). form_submit("btn_cadastrar", "Confirmar", $btn).
+                form_close(); 
+    ?>
+</div>

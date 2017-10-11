@@ -20,9 +20,9 @@
 											" Excluir ", 'class= "btn btn-danger btn-xs"')."</td></tr>";
 														        
         }
-        echo "</table><table><tr>";
+        
         echo "<td></td><td></td><td></td>	<td>".anchor("Administracao/v_cadastroCategoria", 
-											" Novo item ", 'class= "btn btn-primary"')."</td></tr>";
+											" Novo item ", 'class= "btn btn-primary"')."</td>";
         echo "</table>";
 			
     ?>

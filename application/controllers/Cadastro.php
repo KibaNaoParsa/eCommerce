@@ -156,7 +156,7 @@
                     $this->session->set_userdata($dadosSessao);
                     redirect(base_url("produtos"));
                 } else if (count($adm)==1){
-                    $dadosSessao['cliente'] = $adm[0];
+                    $dadosSessao['administracao'] = $adm[0];
                     $dadosSessao['logado'] = TRUE;
                     $this->session->set_userdata($dadosSessao);
                     redirect(base_url("administracao"));

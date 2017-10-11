@@ -28,7 +28,7 @@
         }
         
         echo "<td></td><td></td><td></td><td></td><td></td><td>".anchor("Administracao/v_cadastroProduto", 
-											" Novo ", 'class= "btn btn-info"')."</td>";
+											" Novo item ", 'class= "btn btn-info"')."</td>";
         echo "</table>";
 			
     ?>

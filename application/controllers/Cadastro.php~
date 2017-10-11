@@ -149,8 +149,7 @@
                 $this->db->where('status', 1);
                                 
                 $adm = $this->db->get('administracao')->result();
-                
-						print_r(count($adm));                
+                                
                 if(count($cliente)==1) {
                     $dadosSessao['cliente'] = $cliente[0];
                     $dadosSessao['logado'] = TRUE;

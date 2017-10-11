@@ -37,7 +37,9 @@
 					form_label('Comprimento (mm): ', 'txt_comprimento').
 					form_input('txt_comprimento', $PRODUTO[0]->comprimento_caixa_mm) .br().              
 					form_label('Peso (g): ', 'txt_peso').
-  					form_input('txt_peso', $PRODUTO[0]->peso_gramas) .br().br();                
+  					form_input('txt_peso', $PRODUTO[0]->peso_gramas) .br().
+  					form_label('Ativo (1) ou Inativo (0): ', 'txt_atividade').
+					form_input('txt_atividade', $PRODUTO[0]->ativo).br();  					              
 
 
 //               form_label("Título da categoria: ", "txt_titulo").
